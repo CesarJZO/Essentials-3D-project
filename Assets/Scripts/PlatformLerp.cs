@@ -6,31 +6,22 @@ public class PlatformLerp : MonoBehaviour
 	public Vector3 offset;
 
 	private Vector3 initialPos;
-	private Vector3 a, b;
+	private Vector3 finalPos;
 
 	void Awake()
 	{
 		initialPos = transform.position;
-		SetOffset();
+		finalPos = initialPos + offset;
 	}
 
 	void Update()
 	{
 		var t = Mathf.Sin(Time.time * speed);
-		if (t >= 0f)
-			transform.position = Vector3.Lerp(initialPos, a, t);
-		else
-			transform.position = Vector3.Lerp(initialPos, b, -t);
-
+		transform.position = Vector3.LerpUnclamped(initialPos, finalPos, t);
 	}
 
 	void OnValidate()
 	{
-		SetOffset();
-	}
-	void SetOffset()
-	{
-		a = initialPos + offset;
-		b = initialPos - offset;
+		finalPos = initialPos + offset;
 	}
 }
